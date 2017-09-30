@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[45]:
+# In[1]:
 
 
 # 任意选一个你喜欢的整数，这能帮你得到稳定的结果
@@ -20,7 +20,7 @@ seed = 9999
 # 
 # ## 1.1 创建一个 4*4 的单位矩阵
 
-# In[46]:
+# In[2]:
 
 
 # 这个项目设计来帮你熟悉 python list 和线性代数
@@ -45,7 +45,7 @@ I = [[1,0,0,0],
 
 # ## 1.2 返回矩阵的行数和列数
 
-# In[47]:
+# In[3]:
 
 
 # TODO 返回矩阵的行数和列数
@@ -53,7 +53,7 @@ def shape(M):
     return len(M),len(M[0])
 
 
-# In[48]:
+# In[4]:
 
 
 # 运行以下代码测试你的 shape 函数
@@ -62,7 +62,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_shape')
 
 # ## 1.3 每个元素四舍五入到特定小数数位
 
-# In[49]:
+# In[5]:
 
 
 # TODO 每个元素四舍五入到特定小数数位
@@ -73,7 +73,7 @@ def matxRound(M, decPts=4):
             row[i]=round(row[i],decPts)
 
 
-# In[50]:
+# In[6]:
 
 
 # 运行以下代码测试你的 matxRound 函数
@@ -82,22 +82,25 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_matxRound'
 
 # ## 1.4 计算矩阵的转置
 
-# In[51]:
+# In[9]:
 
 
 # TODO 计算矩阵的转置
 def transpose(M):
-    T=[]
-    row_len=len(M)
-    col_len=len(M[0])
-    for i in range(col_len):
-        T.append([])
-        for j in range(row_len):
-            T[i].append(M[j][i])
-    return T
+    '''
+    zip函数是同时迭代入参中的每个列表，
+    每个列表中同一个位置上的值被拼成同一个元组（元组中按所在的列表位置排列），
+    然后以列表形式返回生成的多个元组；
+    
+    由于M列表是二维数组，所以放入zip函数中的话，
+    必须把M 里的各个成员作为参数列表传入，
+    不然只传了一个一个列表，
+    所以这里用到了星号操作符
+    '''
+    return [list(col) for col in zip(*M)]
 
 
-# In[52]:
+# In[10]:
 
 
 # 运行以下代码测试你的 transpose 函数
@@ -106,7 +109,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_transpose'
 
 # ## 1.5 计算矩阵乘法 AB
 
-# In[53]:
+# In[59]:
 
 
 # TODO 计算矩阵乘法 AB，如果无法相乘则raise ValueError
@@ -127,7 +130,7 @@ def matxMultiply(A, B):
 
 
 
-# In[54]:
+# In[60]:
 
 
 # 运行以下代码测试你的 matxMultiply 函数
@@ -161,23 +164,15 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_matxMultip
 #     ...    & ... & ... & ...& ...\\
 #     a_{n1}    & a_{n2} & ... & a_{nn} & b_{n} \end{bmatrix}$
 
-# In[55]:
+# In[61]:
 
 
 # TODO 构造增广矩阵，假设A，b行数相同
 def augmentMatrix(A, b):
-    M=[]
-    import copy
-    i=0
-    for row_a,row_b in zip(A,b):
-        M.append([])
-        [M[i].append(x) for x in row_a]
-        [M[i].append(x) for x in row_b]
-        i+=1
-    return M
+    return [ra+rb for ra,rb in zip(A,b)]
 
 
-# In[56]:
+# In[62]:
 
 
 # 运行以下代码测试你的 augmentMatrix 函数
@@ -189,13 +184,13 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_augmentMat
 # - 把某行乘以一个非零常数
 # - 把某行加上另一行的若干倍：
 
-# In[57]:
+# In[63]:
 
 
 # TODO r1 <---> r2
 # 直接修改参数矩阵，无返回值
+import copy
 def swapRows(M, r1, r2):
-    import copy
     tmp=copy.deepcopy(M[r1])
     M[r1]=copy.deepcopy(M[r2])
     M[r2]=tmp
@@ -203,14 +198,14 @@ def swapRows(M, r1, r2):
     
 
 
-# In[58]:
+# In[64]:
 
 
 # 运行以下代码测试你的 swapRows 函数
 get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_swapRows')
 
 
-# In[59]:
+# In[65]:
 
 
 # TODO r1 <--- r1 * scale
@@ -223,14 +218,14 @@ def scaleRow(M, r, scale):
         M[r]=[x*scale for x in M[r]]
 
 
-# In[60]:
+# In[66]:
 
 
 # 运行以下代码测试你的 scaleRow 函数
 get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_scaleRow')
 
 
-# In[61]:
+# In[33]:
 
 
 # TODO r1 <--- r1 + r2*scale
@@ -239,7 +234,7 @@ def addScaledRow(M, r1, r2, scale):
     M[r1]=[x+y*scale for x,y in zip(M[r1],M[r2])]
 
 
-# In[62]:
+# In[34]:
 
 
 # 运行以下代码测试你的 addScaledRow 函数
@@ -274,7 +269,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_addScaledR
 # 
 # 为了充分了解Gaussian Jordan消元法的计算流程，请根据Gaussian Jordan消元法，分别手动推演矩阵A为奇异矩阵，矩阵A为非奇异矩阵两种情况。
 
-# In[63]:
+# In[39]:
 
 
 # 不要修改这里！
@@ -296,40 +291,37 @@ printInMatrixFormat(rank,A,b)
 #     -4 & 6 & 2 & -2 & 1\\
 #     -9 & 4 & -5 & 9 & 1\\
 #     -9 & -10 & 5 & -4 & 1\end{bmatrix}$
-# 
-# $ --> \begin{bmatrix}
-# 		-9 & 4 & -5 & 9 & 1\\
-#      7 & 5 & 3 & -5 & 1\\
-#     -4 & 6 & 2 & -2 & 1\\
-#     -9 & -10 & 5 & -4 & 1\end{bmatrix}$
 #     
-# $ --> \begin{bmatrix}
-# 		1 & -4/9 & 5/9 & -1 & -1/9\\
-#     0 & 73/9 & -8/9 & 2 & 16/9\\
-#     0 & 38/9 & 38/9 & -6 & 5/9\\
+# $-> \begin{bmatrix}
+# 	 1 & -0.44 & 0.56 & -1 & -0.11\\
+#     0 & 4.22 & 4.22 & -6 & 0.56\\
+#     0 & 8.11 & -0.89 & 2 & 1.78\\
 #     0 & -14 & 10 & -13 & 0\end{bmatrix}$
-# 
-# $ --> \begin{bmatrix}
-# 		1 & -4/9 & 5/9 & -1 & -1/9\\
-# 		0 & -14 & 10 & -13 & 0\\
-#     0 & 73/9 & -8/9 & 2 & 16/9\\
-#     0 & 38/9 & 38/9 & -6 & 5/9\end{bmatrix}$
-# 
-# $ --> \begin{bmatrix}
-# 		1 & -4/9 & 5/9 & -1 & -1/9\\
-# 		0 & 1 & -5/7 & -13/14 & 0\\
-#     0 & 73/9 & -8/9 & 2 & 16/9\\
-#     0 & 38/9 & 38/9 & -6 & 5/9\end{bmatrix}$
-# 
-# $ --> \begin{bmatrix}
-# 		1 & -4/9 & 5/9 & -1 & -1/9\\
-# 		0 & 1 & -5/7 & -13/14 & 0\\
-#     0 & 0 & 103/21 & 1201/126 & 16/9\\
-#     0 & 0 & 386/63 & -131/63 & 5/9\end{bmatrix}$
-# 
-# $...$
+#   
+# $->\begin{bmatrix}
+# 	 1 & 0 & 0.24 & -0.59 & -0.11\\
+# 	 0 & 1 & -0.71 & 0.93 & 0\\
+#     0 & 0 & 4.9 & -5.53 & 1.78\\
+#     0 & 0 & 7.24 & -9.92 & 0.56\end{bmatrix}$
+# $->\begin{bmatrix}
+# 	 1 & 0 & 0 & -0.26 & -0.13\\
+# 	 0 & 1 & 0 & -0.05 & 0.05\\
+#     0 & 0 & 1 & -1.37 & 0.77\\
+#     0 & 0 & 0 & 1.19 & 1.4\end{bmatrix}$
+#     
+# $->\begin{bmatrix}
+# 	 1 & 0 & 0 & 0 & 0.18\\
+# 	 0 & 1 & 0 & 0 & 0.11\\
+#     0 & 0 & 1 & 0 & 1.69\\
+#     0 & 0 & 0 & 1 & 1.18\end{bmatrix}$
+#     
+# $->返回最后一列\begin{bmatrix}
+# 0.18\\
+# 0.11\\
+# 1.69\\
+# 1.18\end{bmatrix}$
 
-# In[64]:
+# In[50]:
 
 
 # 不要修改这里！
@@ -346,28 +338,36 @@ printInMatrixFormat(rank,A,b)
 # 
 # 增广矩阵
 # $ Ab = \begin{bmatrix}
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\end{bmatrix}$
+#     -7 & -3 & 1 & -9 & 1\\
+#     0 & 0 & 0 & 0 & 1\\
+#     -2 & 7 & 7 & -3 & 1\\
+#     8 & -5 & -6 & 3 & 1\end{bmatrix}$
 # 
 # $ --> \begin{bmatrix}
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\end{bmatrix}$
+#     1 & -0.63 & -0.75 & 0.38 & 0.13\\
+#     0 & 0 & 0 & 0 & 1\\
+#     0 & 5.75 & 5.5 & -2.25 & 1.25\\
+#     0 & -7.38 & -4.25 & -6.38 & 1.88\end{bmatrix}$
 #     
 # $ --> \begin{bmatrix}
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\\
-#     0 & 0 & 0 & 0 & 0\end{bmatrix}$
+#     1 & 0 & -0.39 & 0.92 & -0.03\\
+#     -0 & 1 & 0.58 & 0.86 & -0.25\\
+#     0 & 0 & 2.19 & -7.2 & 2.71\\
+#     0 & 0 & 0 & 0 & 1\end{bmatrix}$
 #     
-# $...$
+# $--> \begin{bmatrix}
+#     1 & 0 & 0 & -0.37 & 0.45\\
+#     -0 & 1 & 0 & 2.77 & -0.97\\
+#     0 & 0 & 1 & -3.30 & 1.24\\
+#     0 & 0 & 0 & 0 & 1\end{bmatrix}
+# $
+# 
+# $->对角线上第四行第四列数值为0 ，所以A为奇异矩阵，返回None
+# $
 
 # ### 2.3.3 实现 Gaussian Jordan 消元法
 
-# In[67]:
+# In[52]:
 
 
 # TODO 实现 Gaussain Jordan 方法求解 Ax = b
@@ -383,7 +383,6 @@ printInMatrixFormat(rank,A,b)
     返回None，如果 A，b 高度不同
     返回None，如果 A 为奇异矩阵
 """
-
 def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
     if len(A)==len(b):
         M=augmentMatrix(A,b)
@@ -402,7 +401,6 @@ def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
                     if u!=i and  abs(M[u][j])>epsilon:
                         scale=-1.0*(M[u][j])
                         addScaledRow(M, u,i, scale)
-                
                 i+=1
             else:
                 return None
@@ -415,7 +413,7 @@ def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
 
 
 
-# In[68]:
+# In[53]:
 
 
 # 运行以下代码测试你的 gj_Solve 函数
@@ -450,7 +448,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_gj_Solve')
 
 # ## 3.1 随机生成样本点
 
-# In[69]:
+# In[54]:
 
 
 # 不要修改这里！
@@ -473,7 +471,7 @@ plt.show()
 # 
 # ### 3.2.1 猜测一条直线
 
-# In[70]:
+# In[55]:
 
 
 #TODO 请选择最适合的直线 y = kx + b
@@ -500,7 +498,7 @@ plt.show()
 # MSE = \frac{1}{n}\sum_{i=1}^{n}{(y_i - mx_i - b)^2}
 # $$
 
-# In[71]:
+# In[56]:
 
 
 # TODO 实现以下函数并输出所选直线的MSE
@@ -742,7 +740,7 @@ print(calculateMSE(X,Y,k,b))
 # 
 # 在3.3 中，我们知道线性回归问题等价于求解 $X^TXh = X^TY$ (如果你选择不做3.3，就勇敢的相信吧，哈哈)
 
-# In[72]:
+# In[67]:
 
 
 # TODO 实现线性回归
@@ -764,7 +762,7 @@ print(m,b)
 
 # 你求得的回归结果是什么？它足够好了吗？请使用运行以下代码将它画出来。
 
-# In[73]:
+# In[68]:
 
 
 # 请不要修改下面的代码
